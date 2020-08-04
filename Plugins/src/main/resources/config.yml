@@ -1,0 +1,11 @@
+# PluginManager - Config: 'config.yml'
+# - Version: 1.0.0
+
+# sets the locale of the plugin messages.
+locale: de_DE
+# debug settings:
+debug:
+  # logs what the plugin is actually doing.
+  logToConsole: true
+  # logs the stacktrace if an exception is throws.
+  printStackTrace: false
