@@ -1,9 +1,9 @@
 name: PluginManager
-version: 1.0.0
+version: 2.0.0-dev
 description: A plugin, that can load, enable or disable Plugins while the server is running without doing a reload.
 main: de.g4memas0n.pluginmanager.PluginManager
 author: G4meMas0n
-api-version: 1.13
+api-version: "1.13"
 
 commands:
   disablePlugin:
