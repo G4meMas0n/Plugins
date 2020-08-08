@@ -1,11 +1,23 @@
-# PluginManager - Config: 'config.yml'
-# - Version: 1.0.0
+##################################################
+#      Plugins - Plugin Configuration File       #
+##################################################
 
-# sets the locale of the plugin messages.
-locale: de_DE
-# debug settings:
-debug:
-  # logs what the plugin is actually doing.
-  logToConsole: true
-  # logs the stacktrace if an exception is throws.
-  printStackTrace: false
+# Sets whether the plugin should log debug information's to the console: (Type: Boolean, Default: false)
+debug: false
+
+# Sets various options to filter commands and tab-completions:
+filter:
+  # Sets the message that gets send to a player who tries to access a filtered command. (Type: String, Default: "§cYou are not permitted to access that command.")
+  # Note: An empty value disables this message.
+  message: "§cYou are not permitted to access that command."
+
+  # Sets whether commands starting with namespaces should be filtered: (Type: Boolean, Default: false)
+  namespaces: false
+
+  # Sets the commands that should be filtered: (Type: String Array, Default: [])
+  # Note: Each entry must be equal to the name of an existing command.
+  commands: []
+
+# Sets the locale of the plugin: (Type: String, Default: "en")
+# Note: Locale names are of the form: "<language>[_<country>[_<variant>]]"
+locale: "en"

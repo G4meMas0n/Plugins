@@ -1,51 +1,12 @@
-name: PluginManager
+main: de.g4memas0n.plugins.Plugins
+name: Plugins
 version: 2.0.0-dev
-description: A plugin, that can load, enable or disable Plugins while the server is running without doing a reload.
-main: de.g4memas0n.pluginmanager.PluginManager
+description: A plugin that provides options to manage plugins while the server is running.
 author: G4meMas0n
 api-version: "1.13"
 
 commands:
-  disablePlugin:
-    description: Disables a Plugin that is enabled.
-    usage: /<command> <Plugin Name>
-    permission: pluginmanager.disableplugin
-  enablePlugin:
-    description: Enables a Plugin that is disabled.
-    usage: /<command> <Plugin Name>
-    permission: pluginmanager.enableplugin
-  loadPlugin:
-    description: Loads a Plugin from a file.
-    usage: /<command> <File Name>
-    permission: pluginmanager.loadplugin
-  pluginManager:
-    description: Shows this Plugin version or reloads this Plugin.
-    aliases: [plm]
-    usage: /<command> <version/reload>
-    permission: pluginmanager.main
-
-permissions:
-  pluginmanager.admin:
-    description: Allows to use all commands of this Plugin.
-    default: false
-    children:
-      pluginmanager.disableplugin: true
-      pluginmanager.enableplugin: true
-      pluginmanager.laodplugin: true
-      pluginmanager.main.*: true
-  pluginmanager.main.*:
-    description: Allows to use the reload and version command of this Plugin.
-    default: false
-    children:
-      pluginmanager.main.version: true
-      pluginmanager.main.reload: true
-  pluginmanger.main.reload:
-    description: Allows to use the reload command of this Plugin.
-    default: false
-    children:
-      pluginmanager.main: true
-  pluginmanger.main.version:
-    description: Allows to use the version command of this Plugin.
-    default: false
-    children:
-      pluginmanager.main: true
+  plugin:
+    description: The main command to manage all plugins.
+    permission: plugins.use
+    usage: /<command> (disable|enable|info|load|reload|version) [<arguments>]
