@@ -2,7 +2,6 @@ package de.g4memas0n.plugins.command;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
@@ -54,7 +53,7 @@ public final class DisableCommand extends BasicCommand {
 
             if (plugin.isEnabled()) {
                 this.getInstance().getLogger().info(String.format("Got task to disable plugin: Disabling plugin '%s'...", plugin.getName()));
-                this.getInstance().getServer().getPluginManager().enablePlugin(plugin);
+                this.getInstance().getServer().getPluginManager().disablePlugin(plugin);
                 this.getInstance().getLogger().info(String.format("Please make sure that plugin '%s' was disabled correctly.", plugin.getName()));
 
                 sender.sendMessage(tl("disablePlugin", plugin.getName()));
