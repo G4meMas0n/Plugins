@@ -27,7 +27,7 @@ public final class PluginCommand extends BasicPluginCommand {
     private final Map<String, BasicCommand> commands = new HashMap<>();
 
     public PluginCommand() {
-        super("plugin", 7, -1);
+        super("plugin", 1, -1);
 
         this.addCommand(new DisableCommand());
         this.addCommand(new EnableCommand());
