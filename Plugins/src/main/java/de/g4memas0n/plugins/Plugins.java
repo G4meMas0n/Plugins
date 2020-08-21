@@ -3,6 +3,8 @@ package de.g4memas0n.plugins;
 import de.g4memas0n.plugins.command.BasicCommand;
 import de.g4memas0n.plugins.command.BasicPluginCommand;
 import de.g4memas0n.plugins.command.PluginCommand;
+import de.g4memas0n.plugins.listener.BasicListener;
+import de.g4memas0n.plugins.listener.FilterListener;
 import de.g4memas0n.plugins.storage.configuration.Settings;
 import de.g4memas0n.plugins.util.messages.Messages;
 import de.g4memas0n.plugins.util.logging.BasicLogger;
@@ -24,6 +26,7 @@ import java.util.regex.Pattern;
 public final class Plugins extends JavaPlugin {
 
     private final Set<BasicPluginCommand> commands;
+    private final Set<BasicListener> listeners;
 
     private final Pattern filter = Pattern.compile("\\.jar$");
     private final BasicLogger logger;
@@ -37,6 +40,7 @@ public final class Plugins extends JavaPlugin {
 
     public Plugins() {
         this.commands = new HashSet<>(2, 1);
+        this.listeners = new HashSet<>(2, 1);
 
         this.logger = new BasicLogger(super.getLogger(), "Plugin", "Plugins");
         this.directory = new File(this.getDataFolder(), "..");
@@ -114,9 +118,14 @@ public final class Plugins extends JavaPlugin {
             this.commands.add(new PluginCommand());
         }
 
+        if (this.listeners.isEmpty()) {
+            this.listeners.add(new FilterListener());
+        }
+
         this.getLogger().debug("Register all plugin commands and listeners...");
 
         this.commands.forEach(command -> command.register(this));
+        this.listeners.forEach(listener -> listener.register(this));
 
         this.getLogger().debug("All plugin commands and listeners has been registered.");
 
@@ -133,6 +142,7 @@ public final class Plugins extends JavaPlugin {
         this.getLogger().debug("Unregister all plugin listeners and commands...");
 
         this.commands.forEach(BasicCommand::unregister);
+        this.listeners.forEach(BasicListener::unregister);
 
         this.getLogger().debug("All plugin listeners and commands has been unregistered.");
 
