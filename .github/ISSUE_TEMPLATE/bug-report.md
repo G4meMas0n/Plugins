@@ -1,6 +1,6 @@
 ---
 name: Bug Report
-about: Report a Chats Bug, to help to improve the Plugin.
+about: Report a Plugins Bug, to help to improve the Plugin.
 title: ''
 labels: Bug
 assignees: ''
@@ -12,7 +12,7 @@ assignees: ''
 ## Information
 
 **Version:**
-<!-- Replace this with the used version of plugins.  -->
+<!-- Replace this with the used version of Plugins.  -->
 
 **Server Log:**
 <!-- Upload `logs/lastest.log` to  https://gist.github.com/ and replace this with the link -->

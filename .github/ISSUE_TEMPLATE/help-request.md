@@ -12,13 +12,13 @@ assignees: ''
 ## Information
 
 **Version:**
-<!-- Replace this with the used version of chats.  -->
+<!-- Replace this with the used version of Plugins.  -->
 
 **Server Log:**
 <!-- Upload `logs/lastest.log` to  https://gist.github.com/ and replace this with the link -->
 
-**Chats Config:**
-<!-- Upload `plugins/Chats/config.yml` to https://gist.github.com/ and replace this with the link -->
+**Plugins Config:**
+<!-- Upload `plugins/Plugins/config.yml` to https://gist.github.com/ and replace this with the link -->
 
 ## Details
 
