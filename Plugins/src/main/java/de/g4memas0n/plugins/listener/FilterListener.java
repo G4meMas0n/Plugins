@@ -30,29 +30,34 @@ public final class FilterListener extends BasicListener {
         }
 
         if (this.getInstance().getSettings().isFilterNamespaces()) {
-            for (final Iterator<String> iterator = event.getCommands().iterator(); iterator.hasNext();) {
-                final Matcher match = this.regex.matcher(iterator.next());
-
-                if (match.matches() || this.getInstance().getSettings().isFilterCommand(match.group())) {
-                    iterator.remove();
+            try {
+                if (event.getCommands().removeIf(command -> this.regex.matcher(command).matches() || this.getInstance().getSettings().isFilterCommand(command))) {
+                    this.getInstance().getLogger().debug(String.format("Filtered tab-completion commands for player: %s", event.getPlayer().getName()));
                 }
+            } catch (UnsupportedOperationException ex) {
+                this.getInstance().getLogger().warning(String.format("Unable to filter tab-completion commands for player '%s' due to custom command-send event.", event.getPlayer().getName()));
             }
 
-            this.getInstance().getLogger().debug(String.format("Filtered tab-completion commands for player: %s", event.getPlayer().getName()));
             return;
         }
 
         if (!this.getInstance().getSettings().getFilterCommands().isEmpty()) {
-            for (final Iterator<String> iterator = event.getCommands().iterator(); iterator.hasNext();) {
-                final Matcher match = this.regex.matcher(iterator.next());
+            try {
+                String command;
+                Matcher match;
 
-                if (this.getInstance().getSettings().isFilterCommand(match.matches()
-                        ? match.group("command") : match.group())) {
-                    iterator.remove();
+                for (final Iterator<String> iterator = event.getCommands().iterator(); iterator.hasNext();) {
+                    match = this.regex.matcher(command = iterator.next());
+
+                    if (this.getInstance().getSettings().isFilterCommand(match.matches() ? match.group("command") : command)) {
+                        iterator.remove();
+                    }
                 }
-            }
 
-            this.getInstance().getLogger().debug(String.format("Filtered tab-completion commands for player: %s", event.getPlayer().getName()));
+                this.getInstance().getLogger().debug(String.format("Filtered tab-completion commands for player: %s", event.getPlayer().getName()));
+            } catch (UnsupportedOperationException ex) {
+                this.getInstance().getLogger().warning(String.format("Unable to filter tab-completion commands for player '%s' due to custom command-send event.", event.getPlayer().getName()));
+            }
         }
     }
 
@@ -63,27 +68,35 @@ public final class FilterListener extends BasicListener {
         }
 
         if (this.getInstance().getSettings().isFilterNamespaces()) {
-            final Matcher match = this.regex.matcher(event.getMessage().split(" ")[0]);
+            final String command = event.getMessage().split(" ")[0];
 
-            if (match.matches() || this.getInstance().getSettings().getFilterCommands().contains(match.group())) {
+            if (this.regex.matcher(command).matches()) {
                 event.setCancelled(true);
                 event.getPlayer().sendMessage(this.getInstance().getSettings().getFilterMessage());
 
-                this.getInstance().getLogger().debug(String.format("Blocked execution of filtered command for player: %s", event.getPlayer().getName()));
+                this.getInstance().getLogger().debug(String.format("Blocked execution of namespace command '%s' for player: %s", command, event.getPlayer().getName()));
+                return;
+            }
+
+            if (this.getInstance().getSettings().isFilterCommand(command)) {
+                event.setCancelled(true);
+                event.getPlayer().sendMessage(this.getInstance().getSettings().getFilterMessage());
+
+                this.getInstance().getLogger().debug(String.format("Blocked execution of filtered command '%s' for player: %s", command, event.getPlayer().getName()));
             }
 
             return;
         }
 
         if (!this.getInstance().getSettings().getFilterCommands().isEmpty()) {
-            final Matcher match = this.regex.matcher(event.getMessage().split(" ")[0]);
+            final String command = event.getMessage().split(" ")[0];
+            final Matcher match = this.regex.matcher(command);
 
-            if (this.getInstance().getSettings().isFilterCommand(match.matches()
-                    ? match.group("command") : match.group())) {
+            if (this.getInstance().getSettings().isFilterCommand(match.matches() ? match.group("command") : command)) {
                 event.setCancelled(true);
                 event.getPlayer().sendMessage(this.getInstance().getSettings().getFilterMessage());
 
-                this.getInstance().getLogger().debug(String.format("Blocked execution of filtered command for player: %s", event.getPlayer().getName()));
+                this.getInstance().getLogger().debug(String.format("Blocked execution of filtered command '%s' for player: %s", command, event.getPlayer().getName()));
             }
         }
     }
@@ -95,25 +108,32 @@ public final class FilterListener extends BasicListener {
         }
 
         if (this.getInstance().getSettings().isFilterNamespaces()) {
-            final Matcher match = this.regex.matcher(event.getBuffer().split(" ")[0]);
+            final String command = event.getBuffer().split(" ")[0];
 
-            if (match.matches() || this.getInstance().getSettings().isFilterCommand(match.group())) {
+            if (this.regex.matcher(command).matches()) {
                 event.setCompletions(Collections.emptyList());
 
-                this.getInstance().getLogger().debug(String.format("Blocked tab-completion of filtered command for sender: %s", event.getSender().getName()));
+                this.getInstance().getLogger().debug(String.format("Blocked tab-completion of namespace command '%s' for player: %s", command, event.getSender().getName()));
+                return;
+            }
+
+            if (this.getInstance().getSettings().isFilterCommand(command)) {
+                event.setCompletions(Collections.emptyList());
+
+                this.getInstance().getLogger().debug(String.format("Blocked tab-completion of filtered command '%s' for player: %s", command, event.getSender().getName()));
             }
 
             return;
         }
 
         if (!this.getInstance().getSettings().getFilterCommands().isEmpty()) {
-            final Matcher match = this.regex.matcher(event.getBuffer().split(" ")[0]);
+            final String command = event.getBuffer().split(" ")[0];
+            final Matcher match = this.regex.matcher(command);
 
-            if (this.getInstance().getSettings().isFilterCommand(match.matches()
-                    ? match.group("command") : match.group())) {
+            if (this.getInstance().getSettings().isFilterCommand(match.matches() ? match.group("command") : command)) {
                 event.setCompletions(Collections.emptyList());
 
-                this.getInstance().getLogger().debug(String.format("Blocked tab-completion of filtered command for sender: %s", event.getSender().getName()));
+                this.getInstance().getLogger().debug(String.format("Blocked tab-completion of filtered command '%s' for sender: %s", command, event.getSender().getName()));
             }
         }
     }
