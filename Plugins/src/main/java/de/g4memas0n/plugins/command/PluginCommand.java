@@ -24,7 +24,7 @@ public final class PluginCommand extends BasicPluginCommand {
     private static final int DELEGATE = 0;
     private static final int ARGUMENTS = 1;
 
-    private final Map<String, BasicCommand> commands = new HashMap<>();
+    private final Map<String, BasicCommand> commands = new HashMap<>(8, 1);
 
     public PluginCommand() {
         super("plugin", 1, -1);
@@ -33,10 +33,11 @@ public final class PluginCommand extends BasicPluginCommand {
         this.addCommand(new EnableCommand());
         this.addCommand(new InfoCommand());
         this.addCommand(new LoadCommand());
+        this.addCommand(new LookupCommand());
         this.addCommand(new ReloadCommand());
         this.addCommand(new VersionCommand());
 
-        this.setPermission("plugins.use");
+        this.setPermission("plugins.manage");
     }
 
     public final @Nullable BasicCommand getCommand(@NotNull final String name) {

@@ -42,8 +42,9 @@ public final class VersionCommand extends BasicCommand {
             sender.sendMessage(tl("versionInfo", plugin.getName(), plugin.getDescription().getVersion()));
 
             if (plugin.equals(this.getInstance())) {
-                sender.sendMessage(tl("versionInfo", this.getInstance().getServer().getName(),
-                        this.getInstance().getServer().getBukkitVersion()));
+                sender.sendMessage(tl("versionServer", this.getInstance().getServer().getName(),
+                        this.getInstance().getServer().getBukkitVersion(),
+                        this.getInstance().getServer().getVersion()));
             }
 
             return true;
@@ -63,8 +64,6 @@ public final class VersionCommand extends BasicCommand {
                     completion.add(plugin.getName());
                 }
             }
-
-            Collections.sort(completion);
 
             return completion;
         }
