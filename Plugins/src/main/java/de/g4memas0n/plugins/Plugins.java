@@ -4,9 +4,8 @@ import de.g4memas0n.plugins.command.BasicPluginCommand;
 import de.g4memas0n.plugins.command.PluginCommand;
 import de.g4memas0n.plugins.listener.BasicListener;
 import de.g4memas0n.plugins.listener.FilterListener;
-import de.g4memas0n.plugins.storage.configuration.Settings;
+import de.g4memas0n.plugins.configuration.Settings;
 import de.g4memas0n.plugins.util.messages.Messages;
-import de.g4memas0n.plugins.util.logging.BasicLogger;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -24,11 +23,10 @@ import java.util.regex.Pattern;
  */
 public final class Plugins extends JavaPlugin {
 
+    private final Pattern filter = Pattern.compile("\\.jar$");
+
     private final BasicPluginCommand command;
     private final BasicListener listener;
-
-    private final Pattern filter = Pattern.compile("\\.jar$");
-    private final BasicLogger logger;
     private final File directory;
 
     private Settings settings;
@@ -40,8 +38,6 @@ public final class Plugins extends JavaPlugin {
     public Plugins() {
         this.command = new PluginCommand();
         this.listener = new FilterListener();
-
-        this.logger = new BasicLogger(super.getLogger(), "Plugin", "Plugins");
         this.directory = new File(this.getDataFolder(), "..");
     }
 
@@ -91,9 +87,7 @@ public final class Plugins extends JavaPlugin {
         this.settings = new Settings(this);
         this.settings.load();
 
-        this.logger.setDebug(this.settings.isDebug());
-
-        this.messages = new Messages(this.getDataFolder(), this.logger);
+        this.messages = new Messages(this.getDataFolder(), this.getLogger());
         this.messages.setLocale(this.settings.getLocale());
 
         this.loaded = true;
@@ -113,12 +107,16 @@ public final class Plugins extends JavaPlugin {
 
         this.messages.enable();
 
-        this.getLogger().debug("Register plugin command and listener...");
+        if (this.settings.isDebug()) {
+            this.getLogger().info("Register plugin command and listeners...");
+        }
 
         this.command.register(this);
         this.listener.register(this);
 
-        this.getLogger().debug("Plugin command and listener has been registered.");
+        if (this.settings.isDebug()) {
+            this.getLogger().info("Plugin command and listeners has been registered.");
+        }
 
         this.enabled = true;
     }
@@ -130,12 +128,16 @@ public final class Plugins extends JavaPlugin {
             return;
         }
 
-        this.getLogger().debug("Unregister plugin command and listener...");
+        if (this.settings.isDebug()) {
+            this.getLogger().info("Unregister plugin command and listeners...");
+        }
 
         this.command.unregister();
         this.listener.unregister();
 
-        this.getLogger().debug("Plugin command and listener has been unregistered.");
+        if (this.settings.isDebug()) {
+            this.getLogger().info("Plugin command and listeners has been unregistered.");
+        }
 
         this.messages.disable();
 
@@ -147,15 +149,8 @@ public final class Plugins extends JavaPlugin {
     }
 
     @Override
-    public @NotNull BasicLogger getLogger() {
-        return this.logger;
-    }
-
-    @Override
     public void reloadConfig() {
         this.settings.load();
-
-        this.logger.setDebug(this.settings.isDebug());
         this.messages.setLocale(this.settings.getLocale());
         this.command.getCommand().setPermissionMessage(this.messages.translate("noPermission"));
     }

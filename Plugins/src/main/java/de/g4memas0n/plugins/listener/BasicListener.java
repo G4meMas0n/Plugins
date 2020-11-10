@@ -1,6 +1,7 @@
 package de.g4memas0n.plugins.listener;
 
 import de.g4memas0n.plugins.Plugins;
+import de.g4memas0n.plugins.configuration.Settings;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -9,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Abstract Representation of a event listener.
@@ -29,6 +31,10 @@ public abstract class BasicListener implements Listener {
 
         this.instance = instance;
         this.instance.getServer().getPluginManager().registerEvents(this, instance);
+
+        if (this.instance.getSettings().isDebug()) {
+            this.instance.getLogger().info("Registered listener: " + this.toString());
+        }
     }
 
     public final void unregister() {
@@ -38,6 +44,10 @@ public abstract class BasicListener implements Listener {
 
         HandlerList.unregisterAll(this);
 
+        if (this.instance.getSettings().isDebug()) {
+            this.instance.getLogger().info("Unregistered listener: " + this.toString());
+        }
+
         this.instance = null;
     }
 
@@ -46,16 +56,23 @@ public abstract class BasicListener implements Listener {
         return this.getClass().getSimpleName() + "{events=" + String.join(",", this.getEvents()) + "}";
     }
 
-    protected final @NotNull Plugins getInstance() {
+    public final @NotNull Plugins getInstance() {
         if (this.instance == null) {
-            throw new IllegalStateException("Unregistered listener '" + this.getClass().getSimpleName()
-                    + "' tried to get the plugin instance");
+            throw new IllegalStateException("Unregistered listener '" + this.getClass().getSimpleName() + "' tried to get the plugin instance");
         }
 
         return this.instance;
     }
 
-    protected final @NotNull List<String> getEvents() {
+    public final @NotNull Settings getSettings() {
+        return this.getInstance().getSettings();
+    }
+
+    public final @NotNull Logger getLogger() {
+        return this.getInstance().getLogger();
+    }
+
+    public final @NotNull List<String> getEvents() {
         final List<String> events = new ArrayList<>();
 
         for (final Method method : this.getClass().getMethods()) {

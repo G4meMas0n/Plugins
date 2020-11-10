@@ -7,8 +7,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-import static de.g4memas0n.plugins.util.messages.Messages.tl;
-
 /**
  * Abstract Command Representation that represents all non bukkit/spigot commands.
  *
@@ -41,6 +39,11 @@ public abstract class BasicCommand {
         }
 
         this.instance = instance;
+
+        if (this.instance.getSettings().isDebug()) {
+            this.instance.getLogger().info("Registered command: " + this.toString());
+        }
+
         return true;
     }
 
@@ -49,14 +52,17 @@ public abstract class BasicCommand {
             return false;
         }
 
+        if (this.instance.getSettings().isDebug()) {
+            this.instance.getLogger().info("Unregistered command: " + this.toString());
+        }
+
         this.instance = null;
         return true;
     }
 
     public final @NotNull Plugins getInstance() {
         if (this.instance == null) {
-            throw new IllegalStateException(String.format("Unregistered command '%s' tried to get the plugin instance",
-                    this.getName()));
+            throw new IllegalStateException("Unregistered command '" + this.name + "' tried to get the plugin instance");
         }
 
         return this.instance;
@@ -70,6 +76,7 @@ public abstract class BasicCommand {
         return this.minArgs;
     }
 
+    @SuppressWarnings("unused")
     public final int getMaxArgs() {
         return this.maxArgs;
     }
@@ -131,11 +138,11 @@ public abstract class BasicCommand {
     }
 
     public final @NotNull String getDescription() {
-        return tl(this.name.concat("CommandDescription"));
+        return this.instance.getMessages().translate(this.name.concat("CommandDescription"));
     }
 
     public final @NotNull String getUsage() {
-        return tl(this.name.concat("CommandUsage"));
+        return this.instance.getMessages().translate(this.name.concat("CommandUsage"));
     }
 
     @Override
