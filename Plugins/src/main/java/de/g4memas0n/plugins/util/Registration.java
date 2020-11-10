@@ -21,7 +21,7 @@ public class Registration implements Comparable<Registration> {
     }
 
     public Registration(@NotNull final Plugin plugin,
-                         @NotNull final String label) {
+                        @NotNull final String label) {
         this.plugin = plugin;
         this.label = label;
     }

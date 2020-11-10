@@ -52,22 +52,22 @@ public final class LookupCommand extends BasicCommand {
                     continue;
                 }
 
-                for (final String cmd : plugin.getDescription().getCommands().keySet()) {
-                    if (cmd.equalsIgnoreCase(arguments[COMMAND])) {
+                for (final String other : plugin.getDescription().getCommands().keySet()) {
+                    if (other.equalsIgnoreCase(arguments[COMMAND])) {
                         registrations.add(new Registration(plugin));
                     }
 
-                    final Map<String, Object> description = plugin.getDescription().getCommands().get(cmd);
+                    final Map<String, Object> description = plugin.getDescription().getCommands().get(other);
 
                     if (description.containsKey(ALIASES_KEY)) {
                         if (description.get(ALIASES_KEY) instanceof String) {
                             if (((String) description.get(ALIASES_KEY)).equalsIgnoreCase(arguments[COMMAND])) {
-                                registrations.add(new Registration(plugin, cmd));
+                                registrations.add(new Registration(plugin, other));
                             }
                         } else if (description.get(ALIASES_KEY) instanceof List) {
                             for (final Object alias : (List<?>) description.get(ALIASES_KEY)) {
                                 if (alias instanceof String && ((String) alias).equalsIgnoreCase(arguments[COMMAND])) {
-                                    registrations.add(new Registration(plugin, cmd));
+                                    registrations.add(new Registration(plugin, other));
                                 }
                             }
                         }

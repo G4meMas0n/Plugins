@@ -1,7 +1,6 @@
 package de.g4memas0n.plugins;
 
-import de.g4memas0n.plugins.command.BasicPluginCommand;
-import de.g4memas0n.plugins.command.PluginCommand;
+import de.g4memas0n.plugins.command.PluginsCommand;
 import de.g4memas0n.plugins.listener.BasicListener;
 import de.g4memas0n.plugins.listener.FilterListener;
 import de.g4memas0n.plugins.configuration.Settings;
@@ -25,7 +24,7 @@ public final class Plugins extends JavaPlugin {
 
     private final Pattern filter = Pattern.compile("\\.jar$");
 
-    private final BasicPluginCommand command;
+    private final PluginsCommand command;
     private final BasicListener listener;
     private final File directory;
 
@@ -36,7 +35,7 @@ public final class Plugins extends JavaPlugin {
     private boolean enabled;
 
     public Plugins() {
-        this.command = new PluginCommand();
+        this.command = new PluginsCommand();
         this.listener = new FilterListener();
         this.directory = new File(this.getDataFolder(), "..");
     }

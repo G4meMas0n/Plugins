@@ -74,7 +74,7 @@ public final class DisableCommand extends BasicCommand {
             final List<String> completion = new ArrayList<>();
 
             for (final Plugin plugin : this.getInstance().getServer().getPluginManager().getPlugins()) {
-                if (!plugin.isEnabled()) {
+                if (!plugin.isEnabled() || plugin.equals(this.getInstance())) {
                     continue;
                 }
 

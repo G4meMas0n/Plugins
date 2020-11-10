@@ -4,7 +4,6 @@ import de.g4memas0n.plugins.Plugins;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -20,8 +19,6 @@ public abstract class BasicCommand {
     private final int maxArgs;
 
     private Plugins instance;
-
-    private List<String> aliases;
     private String permission;
 
     protected BasicCommand(@NotNull final String name,
@@ -109,22 +106,6 @@ public abstract class BasicCommand {
     public abstract @NotNull List<String> tabComplete(@NotNull final CommandSender sender,
                                                       @NotNull final String[] arguments);
 
-    public @NotNull List<String> getAliases() {
-        if (this.aliases == null) {
-            return Collections.emptyList();
-        }
-
-        return this.aliases;
-    }
-
-    public void setAliases(@NotNull final List<String> aliases) {
-        if (aliases.equals(this.aliases)) {
-            return;
-        }
-
-        this.aliases = Collections.unmodifiableList(aliases);
-    }
-
     public @NotNull String getPermission() {
         return this.permission;
     }
@@ -156,14 +137,9 @@ public abstract class BasicCommand {
         builder.append(";max-args=");
         builder.append(this.maxArgs);
 
-        if (!this.getAliases().isEmpty()) {
-            builder.append(";aliases=");
-            builder.append(String.join(",", this.getAliases()));
-        }
-
-        if (!this.getPermission().isEmpty()) {
+        if (!this.permission.isEmpty()) {
             builder.append(";permission=");
-            builder.append(this.getPermission());
+            builder.append(this.permission);
         }
 
         return builder.append("}").toString();

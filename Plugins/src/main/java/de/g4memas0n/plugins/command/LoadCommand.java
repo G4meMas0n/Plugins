@@ -69,7 +69,7 @@ public final class LoadCommand extends BasicCommand {
                 for (final String name : description.getSoftDepend()) {
                     final Plugin current = this.getInstance().getServer().getPluginManager().getPlugin(name);
 
-                    if (current != null) {
+                    if (current != null && current.isEnabled()) {
                         sender.sendMessage(tl("loadDependency", description.getName(), archive.getName(), name));
                         return true;
                     }
@@ -112,12 +112,13 @@ public final class LoadCommand extends BasicCommand {
         if (arguments.length == ARCHIVE + 1) {
             final List<String> completion = new ArrayList<>();
 
+            PluginDescriptionFile description;
+            Plugin plugin;
+
             for (final File archive : this.getInstance().getArchives()) {
                 if (!StringUtil.startsWithIgnoreCase(archive.getName(), arguments[ARCHIVE])) {
                     continue;
                 }
-
-                PluginDescriptionFile description;
 
                 try {
                     description = this.getInstance().getPluginLoader().getPluginDescription(archive);
@@ -125,7 +126,7 @@ public final class LoadCommand extends BasicCommand {
                     continue;
                 }
 
-                final Plugin plugin = this.getInstance().getServer().getPluginManager().getPlugin(description.getName());
+                plugin = this.getInstance().getServer().getPluginManager().getPlugin(description.getName());
 
                 if (plugin == null || !plugin.getDescription().getMain().equals(description.getMain())) {
                     completion.add(archive.getName());

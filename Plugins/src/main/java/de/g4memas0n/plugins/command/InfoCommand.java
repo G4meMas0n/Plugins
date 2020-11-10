@@ -11,7 +11,6 @@ import java.util.List;
 import static de.g4memas0n.plugins.util.Messages.tl;
 import static de.g4memas0n.plugins.util.Messages.tlErr;
 import static de.g4memas0n.plugins.util.Messages.tlJoin;
-import static de.g4memas0n.plugins.util.Messages.tlState;
 
 /**
  * The info command that allows to show the information's of plugins.
@@ -61,7 +60,7 @@ public final class InfoCommand extends BasicCommand {
                 sender.sendMessage(tlJoin("infoSoftDependencies", plugin.getDescription().getSoftDepend()));
             }
 
-            sender.sendMessage(tl("infoStatus", tlState(plugin.isEnabled())));
+            sender.sendMessage(tl("infoStatus", plugin.isEnabled() ? tl("enabled") : tl("disabled")));
             return true;
         }
 
