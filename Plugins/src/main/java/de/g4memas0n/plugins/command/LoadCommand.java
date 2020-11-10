@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static de.g4memas0n.plugins.util.messages.Messages.tl;
-import static de.g4memas0n.plugins.util.messages.Messages.tlErr;
+import static de.g4memas0n.plugins.util.Messages.tl;
+import static de.g4memas0n.plugins.util.Messages.tlErr;
 
 /**
  * The load command that allows to load plugins from their files.

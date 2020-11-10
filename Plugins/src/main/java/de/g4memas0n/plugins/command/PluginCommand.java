@@ -1,7 +1,7 @@
 package de.g4memas0n.plugins.command;
 
 import de.g4memas0n.plugins.Plugins;
-import de.g4memas0n.plugins.util.messages.Messages;
+import de.g4memas0n.plugins.util.Messages;
 import org.bukkit.command.CommandSender;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;

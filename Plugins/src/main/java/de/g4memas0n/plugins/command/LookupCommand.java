@@ -13,8 +13,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static de.g4memas0n.plugins.util.messages.Messages.tl;
-import static de.g4memas0n.plugins.util.messages.Messages.tlErr;
+import static de.g4memas0n.plugins.util.Messages.tl;
+import static de.g4memas0n.plugins.util.Messages.tlErr;
 
 /**
  * The lookup command that allows to lookup for plugins that has registered a specified command or alias.

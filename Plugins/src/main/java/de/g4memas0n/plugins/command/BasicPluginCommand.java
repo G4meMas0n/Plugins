@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
 import java.util.List;
 
-import static de.g4memas0n.plugins.util.messages.Messages.tl;
+import static de.g4memas0n.plugins.util.Messages.tl;
 
 /**
  * Abstract Plugin Command Representation that represent commands that are registered to bukkit/spigot.

@@ -1,6 +1,5 @@
-package de.g4memas0n.plugins.util.messages;
+package de.g4memas0n.plugins.util;
 
-import de.g4memas0n.plugins.util.logging.BasicLogger;
 import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -21,6 +20,7 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 /**
  * Message class, that is used to receive all localized messages of this plugin.
@@ -34,14 +34,14 @@ public class Messages {
 
     private static Messages instance;
 
-    private final BasicLogger logger;
+    private final Logger logger;
     private final File directory;
 
     private final ResourceBundle defaultBundle;
     private ResourceBundle localBundle;
     private ResourceBundle customBundle;
 
-    public Messages(@NotNull final File directory, @NotNull final BasicLogger logger) {
+    public Messages(@NotNull final File directory, @NotNull final Logger logger) {
         this.directory = directory;
         this.logger = logger;
 
@@ -58,21 +58,21 @@ public class Messages {
         instance = null;
     }
 
-    public synchronized @NotNull Locale getLocale() {
+    public @NotNull Locale getLocale() {
         return this.customBundle != null ? this.customBundle.getLocale() : this.localBundle.getLocale();
     }
 
-    public synchronized void setLocale(@NotNull final Locale locale) {
+    public void setLocale(@NotNull final Locale locale) {
         ResourceBundle.clearCache();
 
         try {
             this.localBundle = ResourceBundle.getBundle(BUNDLE_BASE, locale, new CustomPropertiesControl());
 
             if (this.localBundle.getLocale().equals(locale)) {
-                this.logger.debug("Loaded resource bundle for language: " + locale);
+                this.logger.info("Loaded resource bundle for language: " + locale);
             } else {
                 this.logger.warning("Unable to find resource bundle for language: " + locale);
-                this.logger.debug("Loaded fallback resource bundle for language: " + this.localBundle.getLocale());
+                this.logger.info("Loaded fallback resource bundle for language: " + this.localBundle.getLocale());
             }
         } catch (MissingResourceException ex) {
             this.localBundle = this.defaultBundle;
@@ -85,7 +85,7 @@ public class Messages {
                     new CustomNoFallbackControl());
 
             if (this.customBundle.getLocale().equals(locale)) {
-                this.logger.debug("Detected and loaded custom resource bundle for language: " + locale);
+                this.logger.info("Detected and loaded custom resource bundle for language: " + locale);
             } else {
                 this.customBundle = null;
             }
@@ -96,28 +96,28 @@ public class Messages {
         this.logger.info(String.format("Locale has been changed. Using locale %s", this.getLocale()));
     }
 
-    public synchronized @NotNull String translate(@NotNull final String key) {
+    public @NotNull String translate(@NotNull final String key) {
         try {
             if (this.customBundle != null) {
                 try {
                     return this.customBundle.getString(key);
                 } catch (MissingResourceException ex) {
-                    this.logger.debug(String.format("Missing translation key '%s' in custom translation file for language: %s",
+                    this.logger.warning(String.format("Missing translation key '%s' in custom translation file: %s",
                             ex.getKey(), this.customBundle.getBaseBundleName()));
                 }
             }
 
             return this.localBundle.getString(key);
         } catch (MissingResourceException ex) {
-            this.logger.debug(String.format("Missing translation key '%s' in translation file for language: %s",
-                    ex.getKey(), this.getLocale()));
+            this.logger.warning(String.format("Missing translation key '%s' in translation file: %s",
+                    ex.getKey(), this.localBundle.getBaseBundleName()));
 
             return this.defaultBundle.getString(key);
         }
     }
 
-    public synchronized @NotNull String format(@NotNull final String key,
-                                               @NotNull final Object... arguments) {
+    public @NotNull String format(@NotNull final String key,
+                                  @NotNull final Object... arguments) {
         if (arguments.length == 0) {
             return this.translate(key);
         }
@@ -127,14 +127,14 @@ public class Messages {
         try {
             return MessageFormat.format(format, arguments);
         } catch (IllegalArgumentException ex) {
-            this.logger.warning("Invalid translation key '%s': " + ex.getMessage());
+            this.logger.warning(String.format("Invalid translation key '%s': %s", key, ex.getMessage()));
 
             return MessageFormat.format(format.replaceAll("\\{(\\D*?)}", "\\[$1\\]"), arguments);
         }
     }
 
-    public synchronized @NotNull String formatJoining(@NotNull final String key,
-                                                      @NotNull final Collection<String> collection) {
+    public @NotNull String formatJoining(@NotNull final String key,
+                                         @NotNull final Collection<String> collection) {
         if (collection.isEmpty()) {
             return this.translate(key);
         }
@@ -146,7 +146,7 @@ public class Messages {
         try {
             return MessageFormat.format(format, joined);
         } catch (IllegalArgumentException ex) {
-            this.logger.warning("Invalid translation key '%s': " + ex.getMessage());
+            this.logger.warning(String.format("Invalid translation key '%s': %s", key, ex.getMessage()));
 
             return MessageFormat.format(format.replaceAll("\\{(\\D*?)}", "\\[$1\\]"), joined);
         }
@@ -155,7 +155,7 @@ public class Messages {
     public static @NotNull String tl(@NotNull final String key,
                                      @NotNull final Object... arguments) {
         if (instance == null) {
-            return "\u00a74Error: \u00a7cMessages not loaded.";
+            throw new IllegalStateException("Messages not loaded");
         }
 
         return instance.format(key, arguments);
@@ -164,7 +164,7 @@ public class Messages {
     public static @NotNull String tlErr(@NotNull final String key,
                                         @NotNull final Object... arguments) {
         if (instance == null) {
-            return "\u00a74Error: \u00a7cMessages not loaded.";
+            throw new IllegalStateException("Messages not loaded");
         }
 
         return instance.translate("prefixError") + " " + instance.format(key, arguments);
@@ -173,7 +173,7 @@ public class Messages {
     public static @NotNull String tlJoin(@NotNull final String key,
                                          @NotNull final Collection<String> collection) {
         if (instance == null) {
-            return "\u00a74Error: \u00a7cMessages not loaded.";
+            throw new IllegalStateException("Messages not loaded");
         }
 
         return instance.formatJoining(key, collection);
@@ -181,7 +181,7 @@ public class Messages {
 
     public static @NotNull String tlState(final boolean state) {
         if (instance == null) {
-            return state ? "enabled" : "disabled";
+            throw new IllegalStateException("Messages not loaded");
         }
 
         return instance.translate(state ? "enabled" : "disabled");

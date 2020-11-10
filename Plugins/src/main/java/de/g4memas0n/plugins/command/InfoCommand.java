@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static de.g4memas0n.plugins.util.messages.Messages.tl;
-import static de.g4memas0n.plugins.util.messages.Messages.tlErr;
-import static de.g4memas0n.plugins.util.messages.Messages.tlJoin;
-import static de.g4memas0n.plugins.util.messages.Messages.tlState;
+import static de.g4memas0n.plugins.util.Messages.tl;
+import static de.g4memas0n.plugins.util.Messages.tlErr;
+import static de.g4memas0n.plugins.util.Messages.tlJoin;
+import static de.g4memas0n.plugins.util.Messages.tlState;
 
 /**
  * The info command that allows to show the information's of plugins.

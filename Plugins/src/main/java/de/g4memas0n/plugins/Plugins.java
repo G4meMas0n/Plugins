@@ -5,7 +5,7 @@ import de.g4memas0n.plugins.command.PluginCommand;
 import de.g4memas0n.plugins.listener.BasicListener;
 import de.g4memas0n.plugins.listener.FilterListener;
 import de.g4memas0n.plugins.configuration.Settings;
-import de.g4memas0n.plugins.util.messages.Messages;
+import de.g4memas0n.plugins.util.Messages;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
