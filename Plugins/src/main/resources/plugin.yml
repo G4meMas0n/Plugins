@@ -1,6 +1,6 @@
 main: de.g4memas0n.plugins.Plugins
 name: Plugins
-version: 2.0.0
+version: 2.0.1
 description: A plugin that provides options to manage plugins while the server is running.
 author: G4meMas0n
 api-version: "1.13"
@@ -9,4 +9,4 @@ commands:
   plugin:
     description: The main command to manage all plugins.
     permission: plugins.use
-    usage: /<command> (disable|enable|info|load|reload|version) [<arguments>]
+    usage: /<command> (disable|enable|info|load|lookup|reload|version) [<arguments>]

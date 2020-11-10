@@ -179,14 +179,6 @@ public class Messages {
         return instance.formatJoining(key, collection);
     }
 
-    public static @NotNull String tlState(final boolean state) {
-        if (instance == null) {
-            throw new IllegalStateException("Messages not loaded");
-        }
-
-        return instance.translate(state ? "enabled" : "disabled");
-    }
-
     /**
      * Custom ClassLoader for getting resource bundles located in the plugins data folder.
      */
